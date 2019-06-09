@@ -1,0 +1,18 @@
+{
+  "appId": "io.susy.leona",
+  "copyright": "Copyleft 2015-2019 Superstring.Community",
+  "linux": {
+    "category": "Utility",
+    "target": ["AppImage", "snap", "deb", "tar.xz"]
+  },
+  "mac": {
+    "category": "public.app-category.productivity"
+  },
+  "productName": "Susy Leona",
+  "publish": "github",
+  "win": {
+    "icon": "icons/icon.ico",
+    "publisherName": "Superstring.Community",
+    "target": "nsis"
+  }
+}

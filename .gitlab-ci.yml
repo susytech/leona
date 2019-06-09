@@ -1,0 +1,90 @@
+stages:
+  - test
+  - build
+
+variables:
+  GIT_DEPTH: '3'
+  SIMPLECOV: 'true'
+  RUST_BACKTRACE: '1'
+  RUSTFLAGS: ''
+  CARGOFLAGS: ''
+
+cache:
+  key: '${CI_JOB_NAME}'
+  paths:
+    - node_modules/
+    - packages/*/node_modules/
+
+.branches: &branches
+  only:
+    - beta
+    - tags
+    - stable
+    - triggers
+    - master
+
+linux-test:
+  stage: test
+  image: node:10
+  script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - export PATH=$HOME/.yarn/bin:$PATH
+    - yarn install
+    - yarn test
+  tags:
+    - linux-docker
+
+linux-build:
+  stage: build
+  image: node:10
+  <<: *branches
+  script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - export PATH=$HOME/.yarn/bin:$PATH
+    - yarn install
+    - yarn build
+    - yarn release --linux
+  tags:
+    - linux-docker
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'packages/leona-electron/dist/*.AppImage'
+      - 'packages/leona-electron/dist/*.tar.xz'
+      - 'packages/leona-electron/dist/*.snap'
+      - 'packages/leona-electron/dist/*.deb'
+
+osx-build:
+  stage: build
+  <<: *branches
+  script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - export PATH=$HOME/.yarn/bin:$PATH
+    - yarn install
+    - yarn build
+    - yarn release --mac
+  tags:
+    - darwin-shell
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'packages/leona-electron/dist/*.dmg'
+      - 'packages/leona-electron/dist/*.zip'
+
+win-build:
+  stage: build
+  image: electronuserland/builder:wine
+  <<: *branches
+  script:
+    - yarn install
+    - yarn build
+    # `win-build` is a linux machine, so it downloaded a linux susy-sophon.
+    # We download a windows one to make it cross-compile for windows.
+    - rm packages/leona-electron/static/susy* && yarn fetch-susy --win
+    - yarn release --win
+  tags:
+    - linux-docker
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'packages/leona-electron/dist/*.exe'

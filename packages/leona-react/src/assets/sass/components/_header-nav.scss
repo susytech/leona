@@ -1,0 +1,104 @@
+.header-nav {
+  // Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container
+  display: flex;
+  flex-direction: row;
+  height: 3.5rem;
+
+  .header-nav_left,
+  .header-nav_right {
+    flex-direction: column;
+    justify-content: center;
+    width: 2.3rem;
+  }
+
+  .header-nav_left {
+    padding-left: 0.5rem;
+  }
+
+  .header-nav_right {
+    padding-right: 0.5rem;
+  }
+
+  .header-nav_title {
+    align-items: center; /* vertical alignment of titles */
+    /**
+     * Push the the area for the right button to the right
+     * https://stackoverflow.com/a/35270047/3208553
+     */
+    flex-grow: 1;
+    justify-content: center;
+    z-index: 2;
+
+    a,
+    a:link,
+    a:visited,
+    h1 {
+      margin: -0.175rem 0 -0.175rem;
+      padding: 0.25rem 0.5rem 0.175rem;
+      display: inline-block;
+      font-size: ms(0);
+      line-height: ms(0) * 0.8;
+      color: rgba($black, 0.675);
+      font-weight: 500;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 15rem;
+      white-space: nowrap;
+    }
+  }
+
+  a,
+  a:link,
+  a:visited {
+    z-index: 9;
+    color: rgba($black, 0.675);
+    font-weight: 500;
+    display: block;
+    margin: -0.175rem 0 -0.175rem;
+    padding: 0.25rem 0.5rem 0.175rem;
+    border-radius: 0.25rem;
+
+    &:hover {
+      background: rgba($faint, 0.5);
+      color: $black;
+    }
+
+    &.icon {
+      width: ms(0) * 1.3 + 0.5rem;
+      height: ms(0) * 1.3 + 0.5rem;
+      text-indent: -9999rem;
+      background-size: ms(0) auto;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 0.675;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &.-receive {
+        background-image: url('./assets/img/icons/receive.svg');
+      }
+
+      &.-settings {
+        background-image: url('./assets/img/icons/gear.svg');
+      }
+
+      &.-back {
+        background-image: url('./assets/img/icons/back.svg');
+      }
+
+      &.-close {
+        background-image: url('./assets/img/icons/close.svg');
+      }
+
+      &.-new {
+        background-image: url('./assets/img/icons/plus.svg');
+      }
+
+      &.-menu {
+        background-image: url('./assets/img/icons/menu.svg');
+      }
+    }
+  }
+}

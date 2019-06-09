@@ -1,0 +1,10 @@
+.accounts-list {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .create-hint {
+    color: $grey;
+    text-align: center;
+  }
+}
